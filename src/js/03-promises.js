@@ -4,6 +4,8 @@ const form = document.querySelector(".form")
 const inputDelay = document.querySelector("input[name='delay']")
 const inputStep = document.querySelector("input[name='step']")
 const inputAmount = document.querySelector("input[name='amount']")
+const btn = form.querySelector("button[type='submit']");
+
 
 form.addEventListener("submit", formPromise)
 
@@ -12,7 +14,7 @@ function formPromise(event) {
   const initialDelay = parseInt(inputDelay.value);
   const step = parseInt(inputStep.value);
   const amount = parseInt(inputAmount.value);
-
+  btn.disabled = true;
   for (let i = 0; i < amount; i += 1) {
     const delay = initialDelay + i * step;
     createPromise(i, delay)
@@ -22,7 +24,16 @@ function formPromise(event) {
       .catch(({ position, delay }) => {
         Notiflix.Notify.failure(`Rejected promise ${position + 1} in ${delay}ms`)
       })
+      .finally(() => {
+        if (i === amount - 1) {
+          btn.disabled = false
+          inputDelay.value = ''
+          inputStep.value = ''
+          inputAmount.value = ''
+      }
+    })
   }
+  
 }
 
 function createPromise(position, delay) {

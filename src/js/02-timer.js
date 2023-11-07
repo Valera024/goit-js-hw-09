@@ -17,11 +17,17 @@ let timerId;
 startBtn.addEventListener("click", () => {
     timerId = setInterval(() => {
         const today = new Date();
+        console.log("1")
+        if(selectedDate - today.getTime() > 0) {
         const {days, hours, minutes, seconds} = convertMs(selectedDate - today.getTime())
         spanDays.textContent = addLeadingZero(days); 
         spanHours.textContent = addLeadingZero(hours);
         spanMinutes.textContent = addLeadingZero(minutes);
-        spanSeconds.textContent = addLeadingZero(seconds); 
+            spanSeconds.textContent = addLeadingZero(seconds);
+        }
+        else {
+            clearInterval(timerId)
+        }
     }, 1000)
 })
 
